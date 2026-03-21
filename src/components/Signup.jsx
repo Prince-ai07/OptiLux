@@ -64,58 +64,93 @@ const Signup = () => {
 
 
   return (
-    <div className='row justify-content-center mt-4'>
-        <div className="card col-md-6 shadow p-4">
-          <h1 className='text-primary'>Sign Up</h1>
+    <div className='flex min-h-full flex-col row justify-content-center mt-4 px-6 py-12 lg:px-8'>
+        <div className="card col-md-6 p-4 glowing-card">
+          <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
+            <h1 className='mt-10 text-center text-2xl/9 font-bold tracking-tight text-white'>Sign Up</h1>
+          </div>
+          
 
           <h5 className='text-warning'>{loading}</h5>
           <h3 className='text-success'>{success}</h3>
           <h4 className='text-danger'>{error}</h4>
 
-          <form onSubmit={handleSubmit}>
-
-            <input type="text" 
-            placeholder='Enter the Username'
-            className='form-control'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required /> <br />
+          <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
+            <form onSubmit={handleSubmit} className='space-y-6'>
+              <div>
+                <label htmlFor="username" className='block text-2xl/9 font-bold tracking-tight text-white'>Username</label>
+                <div className='mt-2'>
+                <input type="text" 
+                className='form-control block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6'
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required /> <br />
+                </div>
+              
+            </div>
+            
 
             {/* {username} */}
 
-            <input type="email"
-            placeholder='Enter the Email address'
-            className='form-control'
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)}
-            required /> <br />
+            <div>
+              <label htmlFor="email" className="block text-2xl/9 font-bold tracking-tight text-white">Email address</label>
+              <div className='mt-2'>
+                <input type="email"
+                className='form-control block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6 '
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)}
+                required /> <br />
 
+              </div>
+            </div>
+
+            
             {/* {email} */}
+                <div>
+                   <div className="flex items-center justify-between">
+                        <label htmlFor="password" className="block text-2xl/9 font-bold tracking-tight text-white">Password</label>
+                   </div>
+                   <div className="mt-2">
+                        <input type="password" 
+                        className='form-control block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6'
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)} /> <br />
 
-            <input type="password"
-            placeholder='Enter the password'
-            className='form-control' 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required/> <br />
+                   </div>
+                </div>
 
             {/* {password} */}
 
-            <input type="tel"
-            placeholder='Enter the Mobile Phone Number'
-            className='form-control'
-            value={phone} 
-            onChange={(e) => setPhone (e.target.value)}
-            required/> <br />
+            <div>
+              <label htmlFor="phone" className='block text-2xl/9 font-bold tracking-tight text-white'>Phone Number</label>
+              <div className='mt-2'>
+                <input type="tel"
+                  className='form-control block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6'
+                  value={phone} 
+                  onChange={(e) => setPhone (e.target.value)}
+                  required/> <br />
+              </div>
+            </div>
+
+            
 
             {/* {phone} */}
 
-            <input type="submit" value="Signup" className='btn btn-primary' /> <br /> <br />
+            <div>
+              <input type="submit"
+               value="Signup" 
+               className='form-control flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500' /> <br /> <br />
+            </div>
 
-            Already have an account? 
-            <Link to={'/signin'}>Signin</Link>
+            
+            <p className='text-2xl/9 font-bold tracking-tight text-white'>Already have an account?</p>
+             <Link to={'/signin'}>Signin</Link>
 
           </form>
+          </div>
+
+          
         </div>
     </div>
   )

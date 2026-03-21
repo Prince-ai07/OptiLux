@@ -62,7 +62,7 @@ const Getproducts = () => {
 
         {products.map((product)  => (
            <div className="col-md-3 justify-content-center mb-3">
-          <div className="card shadow">
+          <div className="card glowing-card">
               <img 
                 src={img_url + product.product_photo}
                 alt="product name" 
@@ -71,7 +71,7 @@ const Getproducts = () => {
               <div className="card-body">
                 <h5 className="text-primary">{product.product_name}</h5>
 
-                <p className="text-dark">{product.product_description.slice(0, 100) }...</p>
+                <p className="text-white">{product.product_description.slice(0, 100) }...</p>
 
                 <h4 className="text-warning">Kes {product.product_cost}</h4>
 

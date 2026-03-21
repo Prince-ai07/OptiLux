@@ -67,7 +67,7 @@ catch(error){
 
   return (
    <div className='flex min-h-full flex-col row justify-content-center mt-4 px-6 py-12 lg:px-8'>
-        <div className="col-md-6 card shadow p-4 card">
+        <div className="col-md-6 card p-4 glowing-card">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">Sign in to your account</h2>
             </div>
@@ -113,7 +113,7 @@ catch(error){
                 <div>
                      <input type="submit"
                     value="Signin" 
-                    className='flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500'/> <br /> <br />
+                    className='form-control flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500'/> <br /> <br />
                 </div>
 
                

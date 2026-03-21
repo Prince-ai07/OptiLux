@@ -63,3 +63,24 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background: linear-gradient(90deg, #7c3aed, #6366f1);
 }
+.glowing-card {
+  background: #0f1e33; /* keep your dark navy */
+  border-radius: 12px;
+  border: 1px solid rgba(0, 123, 255, 0.3);
+  box-shadow: 
+    0 0 10px rgba(0, 123, 255, 0.4),
+    0 0 20px rgba(0, 123, 255, 0.2);
+  transition: 0.3s ease;
+}
+
+/* stronger glow on hover */
+.glowing-card:hover {
+  box-shadow: 
+    0 0 15px rgba(0, 123, 255, 0.6),
+    0 0 30px rgba(0, 123, 255, 0.4);
+}
+.product_img{
+  object-fit: contain;
+  width: 100%;
+  height: 200px;
+}
