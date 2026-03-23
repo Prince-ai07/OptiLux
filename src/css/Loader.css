@@ -1,51 +1,61 @@
-/* From Uiverse.io by Nawsome */
+/* Prior to using this loader, please ensure that you have set a background image or background color, as the text is transparent and not designed with a solid color. */
 .loader {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
+  --ANIMATION-DELAY-MULTIPLIER: 70ms;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.loader span {
+  padding: 0;
+  margin: 0;
+  letter-spacing: -5rem;
+  color:rgba(0, 123, 255, 0.4) ;
+  font-weight: bold;
+  animation-delay: 5s;
+  transform: translateY(4rem);
+  animation: hideAndSeek 1s alternate infinite cubic-bezier(0.86, 0, 0.07, 1);
+}
+.loader .l {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 0);
+}
+.loader .o {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 1);
+}
+.loader .a {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 2);
+}
+.loader .d {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 3);
+}
+.loader .ispan {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 4);
+}
+.loader .n {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 5);
+}
+.loader .g {
+  animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 6);
+}
+.letter {
+  width: fit-content;
+  height: 3rem;
+  display: block;
+}
+.i {
+  margin-inline: 5px;
+}
+.loader span svg path {
+  fill: rgba(0, 123, 255, 0.4)!important; /* Change this to your preferred color */
+}
+@keyframes hideAndSeek {
+  0% {
+    transform: translateY(4rem);
   }
- 
-  .slider {
-    overflow: hidden;
-    background-color: white;
-    margin: 0 15px;
-    height: 80px;
-    width: 20px;
-    border-radius: 30px;
-    box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.1), -15px -15px 30px #fff,
-      inset -5px -5px 10px rgba(0, 0, 255, 0.1),
-      inset 5px 5px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
+  100% {
+    transform: translateY(0rem);
   }
- 
-  .slider::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 20px;
-    width: 20px;
-    border-radius: 100%;
-    box-shadow: inset 0px 0px 0px rgba(0, 0, 0, 0.3), 0px 420px 0 400px #2697f3,
-      inset 0px 0px 0px rgba(0, 0, 0, 0.1);
-    animation: animate_2 2.5s ease-in-out infinite;
-    animation-delay: calc(-0.5s * var(--i));
-  }
- 
-  @keyframes animate_2 {
-    0% {
-      transform: translateY(250px);
-      filter: hue-rotate(0deg);
-    }
- 
-    50% {
-      transform: translateY(0);
-    }
- 
-    100% {
-      transform: translateY(250px);
-      filter: hue-rotate(180deg);
-    }
-  }
- 
+}

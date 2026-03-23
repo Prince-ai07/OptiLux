@@ -60,10 +60,7 @@ const Signup = () => {
     }
 
   }
-
-
-
-  return (
+   return (
     <div className='flex min-h-full flex-col row justify-content-center mt-4 px-6 py-12 lg:px-8'>
         <div className="card col-md-6 p-4 glowing-card">
           <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
