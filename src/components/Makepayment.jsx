@@ -74,9 +74,9 @@ const Makepayment = () => {
             <img src={img_url + product.product_photo} alt="Product Name" className='product_img' />
 
             <div className="card-body">
-                <h2 className='text-info'>{product.product_name}</h2>
+                <h2 className='text-primary'>{product.product_name}</h2>
 
-                <p className="text-dark">{product.product_description}</p>
+                <p className="text-white">{product.product_description}</p>
 
                 <h3 className="text-warning">KES {product.product_cost}</h3> <br /> 
 
@@ -89,7 +89,7 @@ const Makepayment = () => {
 
 
                     <input type="tel" 
-                    className='form-control'
+                    className='form-control text-white'
                     placeholder='Enter the Phone number +254XXXXXXXXX'
                     required
                     value={number}

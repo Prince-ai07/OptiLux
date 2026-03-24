@@ -7,6 +7,8 @@ import Addproducts from './components/Addproducts';
 import Getproducts from './components/Getproducts';
 import Makepayment from './components/Makepayment';
 import Notfound from './components/Notfound';
+import Products from "./components/Products";
+import Cart from "./components/Cart";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
           <Route path='/addproducts' element={<Addproducts />} />
           <Route path='*' element={<Notfound />} />
           <Route path='/makepayment' element={<Makepayment />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </div>
     </Router>

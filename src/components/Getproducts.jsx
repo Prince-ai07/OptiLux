@@ -1,4 +1,3 @@
-// UPDATED HOMEPAGE UI (Getproducts.jsx) - PREMIUM CAROUSEL + RESTORED IMPORTS
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,20 +7,27 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 
 const Getproducts = () => {
+
+  // ✅ EXISTING STATES (UNCHANGED)
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // ✅ ✅ ADDED STATES (NEW)
+  const [search, setSearch] = useState("");
+  const [cart, setCart] = useState([]);
+
   const navigate = useNavigate();
 
   const img_url = "https://jeremiahprince.alwaysdata.net/static/images/";
 
   const fetchProducts = async () => {
     try {
-    setLoading(true);
-     const [response] = await Promise.all([
-      axios.get("https://jeremiahprince.alwaysdata.net/api/get_products"),
-      new Promise((resolve) => setTimeout(resolve, 5000)) 
-    ]);
+      setLoading(true);
+      const [response] = await Promise.all([
+        axios.get("https://jeremiahprince.alwaysdata.net/api/get_products"),
+        new Promise((resolve) => setTimeout(resolve, 5000)) 
+      ]);
       setProducts(response.data);
     } catch (err) {
       setError(err?.message || "Something went wrong");
@@ -30,8 +36,15 @@ const Getproducts = () => {
     }
   };
 
+  // ✅ EXISTING USEEFFECT
   useEffect(() => {
     fetchProducts();
+  }, []);
+
+  // ✅ ✅ ADDED: LOAD CART FROM LOCAL STORAGE
+  useEffect(() => {
+    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCart(savedCart);
   }, []);
 
   const scrollToProducts = () => {
@@ -39,137 +52,158 @@ const Getproducts = () => {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // ✅ ✅ ADDED: ADD TO CART FUNCTION
+  const addToCart = (product) => {
+    const updatedCart = [...cart, product];
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
+  // ✅ ✅ ADDED: FILTER PRODUCTS
+ const filteredProducts = products.filter((p) =>
+  p.product_name?.toLowerCase().includes(search.toLowerCase())
+);
+
   return (
-    <div style={{ background: '#0f172a' }}>
+    <div className="home">
 
-      {/* HERO SECTION WITH PREMIUM CAROUSEL */}
-      <section style={{ height: '90vh' }}>
-        <div
-          id="heroCarousel"
-          className="carousel slide carousel-fade"
-          data-bs-ride="carousel"
-          data-bs-interval="2500"
-          data-bs-pause="hover"
+      {/* 🔝 NAVBAR */}
+      <nav className="navbar premium-nav">
+        <h3 className="logo">👓 OptiLux</h3>
+
+       <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search specs..."
+          className="search-bar"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              scrollToProducts();
+            }
+          }}
+        />
+
+        <span className="search-icon">🔍</span>
+      </div>
+
+      {search && (
+        <div className="search-suggestions">
+          {filteredProducts.slice(0, 5).map((p, i) => (
+            <div
+              key={i}
+              className="suggestion-item"
+              onClick={() => {
+                setSearch(p.product_name);
+                scrollToProducts();
+              }}
+            >
+              {p.product_name}
+            </div>
+          ))}
+
+          {filteredProducts.length === 0 && (
+            <div className="suggestion-item text-danger">
+              No results found
+            </div>
+          )}
+        </div>
+      )}
+
+        <div 
+          className="cart" 
+          onClick={() => navigate("/cart")}
+          style={{ cursor: "pointer" }}
         >
+          🛒 {cart.length}
+        </div>
+      </nav>
 
-          {/* Indicators */}
-          <div className="carousel-indicators">
-            {[0,1,2,3].map(i => (
-              <button key={i} type="button" data-bs-target="#heroCarousel" data-bs-slide-to={i} className={i===0 ? 'active' : ''}></button>
-            ))}
-          </div>
+      {/* 🎯 HERO */}
+      <section className="hero-section">
+        <div className="hero-overlay"></div>
 
-          <div className="carousel-inner">
+        <div className="hero-content">
+          <h1>See the World Differently</h1>
+          <p>Luxury eyewear crafted for bold personalities</p>
 
-            {[
-              'carousel1.avif',
-              'carousel2.avif',
-              'carousel3.avif',
-              'carousel4.webp'
-            ].map((img, i) => (
-              <div key={i} className={`carousel-item ${i === 0 ? 'active' : ''}`}>
-                <img
-                  src={`/images/${img}`}
-                  className="d-block w-100"
-                  style={{
-                    height: '90vh',
-                    objectFit: 'cover',
-                    filter: 'brightness(60%)',
-                    transition: 'transform 6s ease'
-                  }}
-                  alt={`slide-${i + 1}`}
-                />
-
-                <div
-                  className="carousel-caption"
-                  style={{
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    animation: 'fadeIn 1s ease'
-                  }}
-                >
-                  <h1 style={{ fontSize: '3rem', fontWeight: 'bold' }}>
-                    See the World in Style 👓
-                  </h1>
-                  <p style={{ fontSize: '18px' }}>
-                    Premium eyewear that defines your personality
-                  </p>
-
-                  <button
-                    onClick={scrollToProducts}
-                    className="hero-btn"
-                  >
-                    Explore Specs
-                  </button>
-                </div>
-              </div>
-            ))}
-
-          </div>
-
-          {/* Controls */}
-          <button className="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-            <span className="carousel-control-prev-icon"></span>
+          <button onClick={scrollToProducts} className="hero-btn">
+            Shop Now
           </button>
-
-          <button className="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-            <span className="carousel-control-next-icon"></span>
-          </button>
-
         </div>
       </section>
 
-      {/* PRODUCTS */}
-      <div id="products-section" className='container mt-5'>
-        <h2 className='text-primary mb-4'>Available Specs</h2>
+      {/* 🛍 PRODUCTS */}
+      <div id="products-section" className="container mt-5">
 
-        {/* ✅ RESTORED LOADER + ERROR */}
-        {loading && <Loader/>}
+        <h2 className="section-title">Featured Collection</h2>
+
+        {loading && <Loader />}
         {error && <h4 className="text-danger">{error}</h4>}
 
         <div className="row">
-          {products.map((product, index) => (
-            <div key={index} className="col-md-3 mb-4">
-              <div className="card product-card">
-                <img
-                  src={img_url + product.product_photo}
-                  alt="product"
-                  className="product-img"
-                />
+          {products.slice(0, 8).filter((p) =>
+              p.product_name?.toLowerCase().includes(search.toLowerCase())
+            ).map((product, index) => (
+            <div key={index} className="col-md-3 col-sm-6 mb-4">
+
+              <div className="card product-card-advanced">
+
+                <div className="image-wrapper">
+                  <img
+                    src={img_url + product.product_photo}
+                    alt="product"
+                  />
+                </div>
 
                 <div className="card-body">
                   <h5 className='text-primary'>{product.product_name}</h5>
-                  <p className='text-white'>{product.product_description ? product.product_description.slice(0, 80) : ''}...</p>
-                  <h4 className="price">Kes {product.product_cost}</h4>
 
-                  <button
-                    onClick={() => navigate("/makepayment", { state: { product } })}
-                    className="buy-btn"
-                  >
-                    Buy Now
-                  </button>
+                  <p className='text-white'>
+                    {product.product_description?.slice(0, 60)}...
+                  </p>
+
+                  <h4 className="price">
+                    Kes {product.product_cost}
+                  </h4>
+
+                  <div className="actions">
+                    <button
+                      onClick={() => addToCart(product)}
+                      className="btn-cart"
+                    >
+                      Add to Cart
+                    </button>
+
+                    <button
+                      onClick={() => navigate("/makepayment", { state: { product } })}
+                      className="btn-buy"
+                    >
+                      Buy
+                    </button>
+                  </div>
+
                 </div>
               </div>
+
             </div>
           ))}
         </div>
+        <div className="text-center mt-4">
+          <button
+            className="view-more-btn"
+            onClick={() => navigate("/products")}
+          >
+            View More Products →
+          </button>
+        </div>
       </div>
 
-      {/* FEATURES */}
-      <section className="features">
-        <div>
-          <h3>🕶 Trendy Designs</h3>
-          <p>Stay ahead with modern styles</p>
-        </div>
-        <div>
-          <h3>💎 Premium Quality</h3>
-          <p>Durable frames</p>
-        </div>
-        <div>
-          <h3>🚚 Fast Delivery</h3>
-          <p>Quick shipping</p>
-        </div>
-      </section>
+      {/* ✨ FOOTER */}
+      <footer className="footer">
+        <p>© 2026 OptiLux. All rights reserved.</p>
+      </footer>
 
     </div>
   );

@@ -112,3 +112,13 @@ input[type="submit"]:hover {
 .navlinks.hover{
   background-color: #61dafb;
 }
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+}
+.pagination button {
+  border-radius: 20px;
+  padding: 5px 15px;
+}
