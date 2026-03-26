@@ -7,7 +7,14 @@ const Makepayment = () => {
 
     // Destructure the details passed from the Getproducts component
     // The useLocation hook allows us to get/destrucutre the properties passed from the previous component.
-    const {product} = useLocation().state || {}
+    const { product, cart, total } = useLocation().state || {};
+    const isCartCheckout = cart && cart.length > 0;
+
+// If it's cart → use total
+// If it's buy now → use product price
+    const amountToPay = isCartCheckout
+    ? total
+    : product?.product_cost;
 
     // declare the navigate hook
     const navigate = useNavigate()
@@ -36,15 +43,16 @@ const Makepayment = () => {
 
         //append the data to the form data
         formdata.append("phone", number)
-        formdata.append("amount", product.product_cost)
-
-        const response = await axios.post("https://kbenkamotho.alwaysdata.net/api/mpesa_payment", formdata)
+        formdata.append("amount", amountToPay)
+        const response = await axios.post("https://jeremiahprince.alwaysdata.net/api/mpesa_payment", formdata)
 
         // set loading back to default
         setLoading(false)
 
         // update the success hook with the message 
         setSuccess(response.data.message)
+        localStorage.removeItem("cart");
+        window.dispatchEvent(new Event("cartUpdated"));
         }
         catch(error){
         // if there is an error respond to the error
@@ -71,15 +79,31 @@ const Makepayment = () => {
         </div>
 
         <div className="col-md-6 card shadow p-4">
-            <img src={img_url + product.product_photo} alt="Product Name" className='product_img' />
-
             <div className="card-body">
-                <h2 className='text-primary'>{product.product_name}</h2>
+                {isCartCheckout ? (
+                <>
+                    <h2 className="text-primary">Cart Checkout</h2>
 
-                <p className="text-white">{product.product_description}</p>
+                    {cart.map((item, index) => (
+                    <div key={index} style={{ borderBottom: "1px solid #444", marginBottom: "10px" }}>
+                        <p className="text-white">{item.product_name}</p>
+                        <p className="text-warning">KES {item.product_cost}</p>
+                    </div>
+                    ))}
 
-                <h3 className="text-warning">KES {product.product_cost}</h3> <br /> 
+                    <h3 className="text-success mt-3">Total: KES {total}</h3>
+                </>
+                ) : (
+                <>
+                    <img src={img_url + product.product_photo} alt="Product Name" className='product_img' />
 
+                    <h2 className='text-primary'>{product.product_name}</h2>
+
+                    <p className="text-white">{product.product_description}</p>
+
+                    <h3 className="text-warning">KES {product.product_cost}</h3>
+                </>
+                )}
                 <form onSubmit={handleSubmit}>
 
                      {/* bind the loading hook */}

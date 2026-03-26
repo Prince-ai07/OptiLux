@@ -15,13 +15,15 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <h2 className='title'>Welcome to Treasured Optics</h2>
+          <h2 className="logo">Welcome to OptiLux</h2>
 
-          <nav>
-            <Link to="/" className='navlinks'>Home</Link>
-            <Link to="/addproducts" className='navlinks'>Add</Link>
-            <Link to="/signup" className='navlinks'>Sign Up</Link>
-            <Link to="/signin" className='navlinks'>Sign In</Link>
+          <nav className="nav-container">
+            <Link to="/" className="navlinks">Home</Link>
+            <Link to="/addproducts" className="navlinks">Add</Link>
+            <Link to="/signin" className="navlinks">Sign In</Link>
+
+            {/* 🔘 Sign Up Button */}
+            <Link to="/signup" className="signup-btn">Sign Up</Link>
           </nav>
         </header>
         <Routes>
