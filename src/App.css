@@ -31,67 +31,125 @@ html, body, #root {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-/* 🔥 LOGO */
-.logo {
-  font-size: 30px;
-  font-weight: 800;
-  color: #3b82f6;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-/* NAV CONTAINER */
-.nav-container {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* NAV LINKS */
-.navlinks {
-  text-decoration: none;
-  color: #e5e7eb;
-  font-size: 15px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.navlinks:hover {
-  background-color: rgba(59, 130, 246, 0.2);
-  color: #3b82f6;
-}
-
-/* 🔘 SIGN UP BUTTON - smaller & stylish */
-.signup-btn {
-  text-decoration: none;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
-  padding: 6px 14px;       /* smaller padding */
-  border-radius: 8px;       /* softer corners */
-  font-weight: 600;
-  font-size: 14px;          /* smaller font */
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-}
-
-.signup-btn:hover {
-  transform: scale(1.05);
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-}
-
-/* HEADER STYLING */
+/* HEADER */
 .App-header {
-  background-color: #1e293b; /* darker, modern shade */
-  min-height: 12vh;
+  background: #020617;
+  border-bottom: 1px solid #1e3a8a;
+  padding: 0 40px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
-  font-size: calc(10px + 2vmin);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(12px);
+}
+
+/* LOGO */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-text span:first-child {
+  font-size: 1.2rem;
+  font-weight: 800;
   color: white;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.logo-text span:last-child {
+  font-size: 0.6rem;
+  color: #3b82f6;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* NAV */
+.nav-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navlinks {
+  text-decoration: none;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: 0.25s;
+}
+
+.navlinks:hover {
+  color: white;
+  background: rgba(59, 130, 246, 0.12);
+}
+
+.nav-divider {
+  width: 1px;
+  height: 18px;
+  background: #1e3a8a;
+  margin: 0 6px;
+}
+
+/* SIGN IN — ghost button */
+.signin-btn {
+  text-decoration: none;
+  color: #3b82f6;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: 1px solid #1e3a8a;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: 0.25s;
+}
+
+.signin-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+}
+
+/* SIGN UP — solid button */
+.signup-btn {
+  text-decoration: none;
+  background: #3b82f6;
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: 0.25s;
+}
+
+.signup-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
 }
 .title{
   flex: 1;
