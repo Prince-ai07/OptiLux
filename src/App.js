@@ -11,6 +11,7 @@ import Products from "./components/Products";
 import Cart from "./components/Cart";
 import AboutUs from './components/Aboutus';
 import Blog from './components/Blog';
+import BlogPost from './components/BlogPost';
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<BlogPost />} />
         </Routes>
       </div>
     </Router>

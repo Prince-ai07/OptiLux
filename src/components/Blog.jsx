@@ -176,7 +176,7 @@ const Blog = () => {
                 <span className="blog-meta-date">📅 {featuredPost.date}</span>
                 <span className="blog-meta-read">⏱ {featuredPost.readTime}</span>
               </div>
-              <button className="blog-read-btn">
+              <button className="blog-read-btn" onClick={() => navigate(`/blog/${featuredPost.id}`)}>
                 Read Article →
               </button>
             </div>
@@ -198,7 +198,7 @@ const Blog = () => {
           ) : (
             <div className="blog-grid">
               {(activeCategory === "All" && !searchTerm ? remainingPosts : filteredPosts).map((post, i) => (
-                <div key={i} className="blog-card">
+                <div key={i} className="blog-card" onClick={() => navigate(`/blog/${post.id}`)}>
                   <div className="blog-card-image">
                     <div className="blog-card-placeholder">
                       <span>
@@ -224,7 +224,7 @@ const Blog = () => {
                         <span className="blog-meta-dot">·</span>
                         <span className="blog-meta-read">{post.readTime}</span>
                       </div>
-                      <button className="blog-card-read">Read →</button>
+                      <button className="blog-card-read" onClick={(e) => {e.stopPropagation(); navigate(`/blog/${post.id}`);}}>Read →</button>
                     </div>
                   </div>
                 </div>

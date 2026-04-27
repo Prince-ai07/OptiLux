@@ -1,0 +1,316 @@
+.blogpost-page {
+  background: #080d17;
+  color: #e2e8f0;
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.blogpost-notfound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #080d17;
+  gap: 20px;
+  color: #64748b;
+}
+
+.blogpost-notfound button {
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.4);
+  color: #c9a84c;
+  padding: 10px 24px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* ── Back ─────────────────────────────────────────────────── */
+.blogpost-back {
+  max-width: 780px;
+  margin: 32px auto 0;
+  padding: 0 24px;
+}
+
+.blogpost-back button {
+  background: transparent;
+  border: none;
+  color: #475569;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+
+.blogpost-back button:hover {
+  color: #c9a84c;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.blogpost-header {
+  padding: 48px 24px 60px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.blogpost-header-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.blogpost-category {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #c9a84c;
+  margin-bottom: 12px;
+}
+
+.blogpost-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+
+.blogpost-tag.featured { background: #c9a84c; color: #0f172a; }
+.blogpost-tag.popular  { background: #3b82f6; color: #fff; }
+.blogpost-tag.new      { background: #10b981; color: #fff; }
+
+.blogpost-header h1 {
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.blogpost-excerpt {
+  font-size: 17px;
+  color: #64748b;
+  line-height: 1.8;
+  margin-bottom: 36px;
+  max-width: 680px;
+}
+
+.blogpost-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.blogpost-author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.blogpost-author-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e3a5f, #c9a84c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.blogpost-author-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 3px;
+}
+
+.blogpost-author-date {
+  font-size: 12px;
+  color: #475569;
+}
+
+/* ── Body ─────────────────────────────────────────────────── */
+.blogpost-body {
+  padding: 60px 24px;
+}
+
+.blogpost-body-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.blogpost-intro {
+  font-size: 18px;
+  color: #94a3b8;
+  line-height: 1.9;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.blogpost-heading {
+  font-size: 22px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 44px 0 16px;
+  line-height: 1.3;
+}
+
+.blogpost-paragraph {
+  font-size: 16px;
+  color: #94a3b8;
+  line-height: 1.9;
+  margin-bottom: 24px;
+}
+
+.blogpost-tip {
+  display: flex;
+  gap: 18px;
+  background: rgba(201, 168, 76, 0.06);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-left: 3px solid #c9a84c;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 36px 0;
+  align-items: flex-start;
+}
+
+.blogpost-tip-icon {
+  font-size: 20px;
+  color: #c9a84c;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.blogpost-tip p {
+  font-size: 15px;
+  color: #b0b8c8;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* ── Share ────────────────────────────────────────────────── */
+.blogpost-share {
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.blogpost-share p {
+  font-size: 13px;
+  color: #475569;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.blogpost-share-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.blogpost-share-btns button {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #64748b;
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.blogpost-share-btns button:hover {
+  border-color: rgba(201,168,76,0.4);
+  color: #c9a84c;
+}
+
+/* ── Related Posts ────────────────────────────────────────── */
+.blogpost-related {
+  padding: 60px 24px;
+  background: rgba(255,255,255,0.015);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.blogpost-related-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.blogpost-related-inner h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 32px;
+}
+
+.blogpost-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.blogpost-related-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.blogpost-related-card:hover {
+  border-color: rgba(201,168,76,0.25);
+  transform: translateY(-3px);
+}
+
+.blogpost-related-image {
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: rgba(201,168,76,0.25);
+}
+
+.blogpost-related-body {
+  padding: 20px;
+}
+
+.blogpost-related-cat {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #c9a84c;
+  margin-bottom: 8px;
+}
+
+.blogpost-related-body h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.blogpost-related-body p {
+  font-size: 12px;
+  color: #475569;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .blogpost-related-grid { grid-template-columns: 1fr; }
+  .blogpost-header h1 { font-size: 28px; }
+  .blogpost-intro { font-size: 16px; }
+}
