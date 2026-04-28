@@ -341,9 +341,9 @@ const Getproducts = () => {
                   navigate("/blog");
                 }}>Blog</a>
               </li>
-              <li><a href="#">Careers</a></li>
-              <li><a href="#">Press</a></li>
-              <li><a href="#">Contact</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); navigate("/careers"); }}>Careers</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); navigate("/press"); }}>Press</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); navigate("/contact"); }}>Contact</a></li>
             </ul>
           </div>
           <div className="footer-col">

@@ -12,6 +12,9 @@ import Cart from "./components/Cart";
 import AboutUs from './components/Aboutus';
 import Blog from './components/Blog';
 import BlogPost from './components/BlogPost';
+import Careers from './components/Careers';
+import Press from './components/Press';
+import Contact from './components/Contact';
 
 function App() {
   return (
@@ -61,6 +64,9 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/press" element={<Press />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>
     </Router>
