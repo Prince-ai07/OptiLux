@@ -657,3 +657,28 @@
   flex-shrink: 0;
   transition: all 0.2s ease;
 }
+.newsletter-msg {
+  margin-top: 12px;
+  font-size: 13px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  display: inline-block;
+  animation: fadeInMsg 0.3s ease;
+}
+
+.newsletter-msg.success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.newsletter-msg.error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+@keyframes fadeInMsg {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

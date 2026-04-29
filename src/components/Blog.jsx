@@ -2,6 +2,88 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Blog.css';
 
+const NewsletterForm = () => {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState(null); // null | "loading" | "success" | "error"
+  const [message, setMessage] = useState("");
+
+  const handleSubscribe = async () => {
+    if (!email || !email.includes("@")) {
+      setStatus("error");
+      setMessage("Please enter a valid email address.");
+      // Auto-clear error after 4 seconds
+      setTimeout(() => setStatus(null), 4000);
+      return;
+    }
+
+    setStatus("loading");
+
+    try {
+      const res = await fetch("https://jeremiahprince.alwaysdata.net/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus("success");
+        setMessage(data.message);
+        setEmail("");
+        // Auto-clear success message after 5 seconds
+        setTimeout(() => {
+          setStatus(null);
+          setMessage("");
+        }, 5000);
+      } else {
+        setStatus("error");
+        setMessage(data.message);
+        // Auto-clear error after 4 seconds
+        setTimeout(() => {
+          setStatus(null);
+          setMessage("");
+        }, 4000);
+      }
+
+    } catch (err) {
+      setStatus("error");
+      setMessage("Something went wrong. Please try again.");
+      setTimeout(() => {
+        setStatus(null);
+        setMessage("");
+      }, 4000);
+    }
+  };
+
+  return (
+    <div className="newsletter-form">
+      <input
+        type="email"
+        placeholder="Enter your email..."
+        value={email}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          setStatus(null);
+        }}
+        disabled={status === "loading"}
+      />
+      <button
+        onClick={handleSubscribe}
+        disabled={status === "loading"}
+      >
+        {status === "loading" ? "Subscribing..." : "Subscribe"}
+      </button>
+
+      {status === "success" && (
+        <p className="newsletter-msg success">✓ {message}</p>
+      )}
+      {status === "error" && (
+        <p className="newsletter-msg error">✕ {message}</p>
+      )}
+    </div>
+  );
+};
+
 const Blog = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("All");
@@ -236,15 +318,11 @@ const Blog = () => {
       </section>
 
       {/* NEWSLETTER */}
-      <section className="blog-newsletter">
-        <div className="blog-newsletter-inner">
-          <p className="about-section-tag center">Stay Updated</p>
-          <h2>Never Miss a Story</h2>
-          <p>Get the latest eyewear guides, trend reports and exclusive OptiLux deals straight to your inbox.</p>
-          <div className="blog-newsletter-form">
-            <input type="email" placeholder="Enter your email address..." />
-            <button>Subscribe</button>
-          </div>
+      <section className="newsletter">
+        <div className="newsletter-box">
+          <h2>Stay in Style 👓</h2>
+          <p>Subscribe to get exclusive deals, new arrivals, and style tips delivered to your inbox.</p>
+          <NewsletterForm />
         </div>
       </section>
 

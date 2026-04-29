@@ -5,6 +5,89 @@ import '../css/Home.css';
 import Loader from './Loader'; 
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
+const NewsletterForm = () => {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState(null); // null | "loading" | "success" | "error"
+  const [message, setMessage] = useState("");
+
+  const handleSubscribe = async () => {
+    if (!email || !email.includes("@")) {
+      setStatus("error");
+      setMessage("Please enter a valid email address.");
+      // Auto-clear error after 4 seconds
+      setTimeout(() => setStatus(null), 4000);
+      return;
+    }
+
+    setStatus("loading");
+
+    try {
+      const res = await fetch("https://jeremiahprince.alwaysdata.net/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus("success");
+        setMessage(data.message);
+        setEmail("");
+        // Auto-clear success message after 5 seconds
+        setTimeout(() => {
+          setStatus(null);
+          setMessage("");
+        }, 5000);
+      } else {
+        setStatus("error");
+        setMessage(data.message);
+        // Auto-clear error after 4 seconds
+        setTimeout(() => {
+          setStatus(null);
+          setMessage("");
+        }, 4000);
+      }
+
+    } catch (err) {
+      setStatus("error");
+      setMessage("Something went wrong. Please try again.");
+      setTimeout(() => {
+        setStatus(null);
+        setMessage("");
+      }, 4000);
+    }
+  };
+
+  return (
+    <div className="newsletter-form">
+      <input
+        type="email"
+        placeholder="Enter your email..."
+        value={email}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          setStatus(null);
+        }}
+        disabled={status === "loading"}
+      />
+      <button
+        onClick={handleSubscribe}
+        disabled={status === "loading"}
+      >
+        {status === "loading" ? "Subscribing..." : "Subscribe"}
+      </button>
+
+      {status === "success" && (
+        <p className="newsletter-msg success">✓ {message}</p>
+      )}
+      {status === "error" && (
+        <p className="newsletter-msg error">✕ {message}</p>
+      )}
+    </div>
+  );
+};
+
+
 const Getproducts = () => {
 
   const [products, setProducts] = useState([]);
@@ -260,10 +343,7 @@ const Getproducts = () => {
         <div className="newsletter-box">
           <h2>Stay in Style 👓</h2>
           <p>Subscribe to get exclusive deals, new arrivals, and style tips delivered to your inbox.</p>
-          <div className="newsletter-form">
-            <input type="email" placeholder="Enter your email..." />
-            <button>Subscribe</button>
-          </div>
+          <NewsletterForm />
         </div>
       </section>
 
