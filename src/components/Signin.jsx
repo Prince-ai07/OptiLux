@@ -1,134 +1,186 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../css/Auth.css';
 
 const Signin = () => {
+  const navigate = useNavigate();
 
-  // Define the two hooks for capturing/storing the users input
-  const [email, setEmail] = useState("");
+  const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
+  const [showPwd,  setShowPwd]  = useState(false);
 
-// Declare 3 additional hooks
-const [loading, setLoading] = useState("");
-const [success, setSuccess] = useState("");
-const [error, setError] = useState("");
+  const [loading,  setLoading]  = useState(false);
+  const [error,    setError]    = useState("");
 
-// Below we have the useNavigate hook to redirect us to another page on successful login/signin
-const navigate = useNavigate()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-// Below is the function to add the signin function
-const handleSubmit = async(e) =>{
-  // Prevent the site from reloading
-e.preventDefault()
+    try {
+      const formdata = new FormData();
+      formdata.append("email",    email);
+      formdata.append("password", password);
 
-//Update the loading hook with a message
-setLoading("Please wait while we authenticate your account.")
+      const response = await axios.post(
+        "https://jeremiahprince.alwaysdata.net/api/signin",
+        formdata
+      );
 
-try{
-  // Create a formData object that will hold the email and the password
-  const formdata = new FormData()
+      setLoading(false);
 
-  // Insert/append the email and the password on the formData created.
-  formdata.append("email", email);
-  formdata.append("password", password)
+      if (response.data.user) {
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        navigate("/");
+      } else {
+        setError("Incorrect email or password. Please try again.");
+      }
 
-  // interact with axios for the response
-  const response = await axios.post("https://jeremiahprince.alwaysdata.net/api/signin", formdata);
-
-  // Set the loading hook back to default
-  setLoading("");
-
-  // check whether the user exists as part of your response from the API
-  if(response.data.user){
-    // If user is there, definitely the details during signin are correct
-    // console.log(response.data.user)
-    // setSuccess("Login successful")
-
-     // Store user details in local storage
-    localStorage.setItem("user", JSON.stringify(response.data.user));
-    
-
-    // If it is successful, let a person get redirected to another page
-    navigate("/");
-  }
-  else{
-    // User is not found, that means the credential entered on the form are incorrect
-    setError("Login Failed: Please try again...")
-  }
-}
-catch(error){
-  // Set loading back to default
-  setLoading("")
-
-  // update the error hook with message
-  setError("Oops, something went wrong. Try again...")
-}
-}
+    } catch (err) {
+      setLoading(false);
+      setError("Something went wrong. Please try again.");
+    }
+  };
 
   return (
-   <div className='flex min-h-full flex-col row justify-content-center mt-4 px-6 py-12 lg:px-8'>
-        <div className="col-md-6 card p-4 glowing-card">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">Sign in to your account</h2>
+    <div className="auth-page">
+      <div className="auth-blob auth-blob-1"></div>
+      <div className="auth-blob auth-blob-2"></div>
+
+      <div className="auth-container signin-layout">
+
+        {/* ── LEFT: Form ─────────────────────────────────────────────────── */}
+        <div className="auth-form-panel">
+          <div className="auth-form-inner">
+            <p className="auth-form-tag">Welcome Back</p>
+            <h2 className="auth-form-title">Sign In</h2>
+            <p className="auth-form-sub">
+              Don't have an account?{" "}
+              <Link to="/signup" className="auth-link">Sign up →</Link>
+            </p>
+
+            {error && (
+              <div className="auth-alert error">✕ {error}</div>
+            )}
+
+            <form onSubmit={handleSubmit} className="auth-form">
+
+              {/* Email */}
+              <div className="auth-field">
+                <label>Email Address *</label>
+                <div className="auth-input-wrap">
+                  <span className="auth-input-icon">✉️</span>
+                  <input
+                    type="email"
+                    placeholder="john@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    autoFocus
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div className="auth-field">
+                <div className="auth-field-header">
+                  <label>Password *</label>
+                  {/* Forgot password — you can wire this to a route later */}
+                  <span className="auth-forgot">Forgot password?</span>
+                </div>
+                <div className="auth-input-wrap">
+                  <span className="auth-input-icon">🔒</span>
+                  <input
+                    type={showPwd ? "text" : "password"}
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="auth-pwd-toggle"
+                    onClick={() => setShowPwd(!showPwd)}
+                    tabIndex={-1}
+                  >
+                    {showPwd ? "🙈" : "👁️"}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="auth-submit-btn"
+                disabled={loading}
+              >
+                {loading ? "Signing In..." : "Sign In →"}
+              </button>
+
+            </form>
+
+            {/* Divider */}
+            <div className="auth-divider">
+              <span></span>
+              <p>or continue as</p>
+              <span></span>
             </div>
 
-          <h5 className='text-info'>{loading}</h5>
-          <h3 className='text-success'>{success}</h3>
-          <h4 className="text-danger">{error}</h4>
+            <button
+              className="auth-guest-btn"
+              onClick={() => navigate("/")}
+            >
+              👓 Browse as Guest
+            </button>
 
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                    <label htmlFor="email" className="block text-2xl/9 font-bold tracking-tight text-white">Email address</label>
-                    <div className="mt-2">
-                     <input type="email"
-                        className='form-control block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6'
-                        required
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)}/> <br />
-                    </div>
-                </div>
-                
-               
-
-            {/* {email} */}
-
-                <div>
-                   <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="block text-2xl/9 font-bold tracking-tight text-white">Password</label>
-                   </div>
-                   <div className="mt-2">
-                        <input type="password" 
-                        className='form-control block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6'
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)} /> <br />
-
-                   </div>
-                </div>
-
-                 
-            {/* {password} */}
-
-                <div>
-                     <input type="submit"
-                    value="Signin" 
-                    className='form-control flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500'/> <br /> <br />
-                </div>
-
-               
-
-                      <p className='text-2xl/9 font-bold tracking-tight text-white'>Don't have an account?</p>
-                      <Link to={'/signup'}>Signup</Link>
-             </form>
           </div>
-
-          
         </div>
+
+        {/* ── RIGHT: Brand panel ──────────────────────────────────────────── */}
+        <div className="auth-brand-panel">
+          <div className="auth-brand-inner">
+            <div className="auth-brand-logo">
+              <svg viewBox="0 0 42 42" fill="none">
+                <rect width="42" height="42" rx="10" fill="#0f172a"/>
+                <circle cx="13" cy="22" r="7" stroke="#3b82f6" strokeWidth="2" fill="none"/>
+                <circle cx="29" cy="22" r="7" stroke="#3b82f6" strokeWidth="2" fill="none"/>
+                <path d="M20 22 L22 22" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M6 22 L6 19"   stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M36 22 L36 19" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="11" cy="20" r="1.2" fill="#60a5fa" opacity="0.6"/>
+                <circle cx="27" cy="20" r="1.2" fill="#60a5fa" opacity="0.6"/>
+                <circle cx="21" cy="11" r="2"   fill="#facc15"/>
+              </svg>
+              <span>OptiLux</span>
+            </div>
+
+            <div className="auth-brand-copy">
+              <p className="auth-brand-tag">Kenya's Finest</p>
+              <h1 className="auth-brand-title">Premium<br/>Eyewear<br/>Awaits</h1>
+              <p className="auth-brand-sub">
+                Sign in to access your order history, saved items,
+                and exclusive member offers.
+              </p>
+            </div>
+
+            <div className="auth-brand-stats">
+              {[
+                { num: "5,200+", label: "Happy Customers" },
+                { num: "320+",   label: "Premium Frames"  },
+                { num: "4.9★",   label: "Average Rating"  },
+              ].map((s, i) => (
+                <div key={i} className="auth-stat">
+                  <strong>{s.num}</strong>
+                  <span>{s.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default Signin;
-
-// How can you store the users details on the local storage

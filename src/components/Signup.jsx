@@ -1,157 +1,212 @@
 import axios from 'axios';
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import '../css/Auth.css';
 
 const Signup = () => {
-  // Initialize the hooks
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone,    setPhone]    = useState("");
+  const [showPwd,  setShowPwd]  = useState(false);
 
-  // Define the three states an application will move to
-  const [loading, setLoading] = useState("");
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
+  const [loading,  setLoading]  = useState(false);
+  const [success,  setSuccess]  = useState("");
+  const [error,    setError]    = useState("");
 
-  // Below is a function that will handle the submit function
-  const handleSubmit =  async(e) =>{
-    // Below we prevent our site from reloading
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    // Update our loading hook with a message that will be displayed to the users who are trying to register
-    setLoading("Please wait as registration is in progress...")
-
-    try{
-      // Create a form data object that will enable you to capture the four detail entered on the form
+    try {
       const formdata = new FormData();
-
-      // Insert the four details (username, email, password, phone) in terms of key - value pairs
       formdata.append("username", username);
-      formdata.append("email", email);
+      formdata.append("email",    email);
       formdata.append("password", password);
-      formdata.append("phone", phone);
+      formdata.append("phone",    phone);
 
-      // by use of axios, we can access the method post
-      const response = await axios.post("https://jeremiahprince.alwaysdata.net/api/signup", formdata)
+      const response = await axios.post(
+        "https://jeremiahprince.alwaysdata.net/api/signup",
+        formdata
+      );
 
-      // Set back the loading hook to default
-      setLoading("");
+      setLoading(false);
+      setSuccess(response.data.message);
+      setUsername(""); setEmail(""); setPassword(""); setPhone("");
 
-      // Just incase everything goes on well, update the success hook with a message
-      setSuccess(response.data.message)
-
-      // clear your hooks 
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setPhone("");
-
+      // Redirect to sign in after 2 seconds
       setTimeout(() => {
         setSuccess("");
-      }, 5000);
+        navigate("/signin");
+      }, 2000);
+
+    } catch (err) {
+      setLoading(false);
+      setError("Registration failed. Please try again.");
     }
-    catch(error){
-      // set the loading hook back to default
-      setLoading("");
+  };
 
-      // update the error hook with the message given back from the response
-      setError(error.message)
-    }
+  return (
+    <div className="auth-page">
+      <div className="auth-blob auth-blob-1"></div>
+      <div className="auth-blob auth-blob-2"></div>
 
-  }
-   return (
-    <div className='flex min-h-full flex-col row justify-content-center mt-4 px-6 py-12 lg:px-8'>
-        <div className="card col-md-6 p-4 glowing-card">
-          <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-            <h1 className='mt-10 text-center text-2xl/9 font-bold tracking-tight text-white'>Sign Up</h1>
-          </div>
-          
+      <div className="auth-container">
 
-          <h5 className='text-warning'>{loading}</h5>
-          <h3 className='text-success'>{success}</h3>
-          <h4 className='text-danger'>{error}</h4>
+        {/* ── LEFT: Brand panel ──────────────────────────────────────────── */}
+        <div className="auth-brand-panel">
+          <div className="auth-brand-inner">
+            <div className="auth-brand-logo">
+              <svg viewBox="0 0 42 42" fill="none">
+                <rect width="42" height="42" rx="10" fill="#0f172a"/>
+                <circle cx="13" cy="22" r="7" stroke="#3b82f6" strokeWidth="2" fill="none"/>
+                <circle cx="29" cy="22" r="7" stroke="#3b82f6" strokeWidth="2" fill="none"/>
+                <path d="M20 22 L22 22" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M6 22 L6 19"   stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M36 22 L36 19" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="11" cy="20" r="1.2" fill="#60a5fa" opacity="0.6"/>
+                <circle cx="27" cy="20" r="1.2" fill="#60a5fa" opacity="0.6"/>
+                <circle cx="21" cy="11" r="2"   fill="#facc15"/>
+              </svg>
+              <span>OptiLux</span>
+            </div>
 
-          <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
-            <form onSubmit={handleSubmit} className='space-y-6'>
-              <div>
-                <label htmlFor="username" className='block text-2xl/9 font-bold tracking-tight text-white'>Username</label>
-                <div className='mt-2'>
-                <input type="text" 
-                className='form-control block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6'
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required /> <br />
+            <div className="auth-brand-copy">
+              <p className="auth-brand-tag">Join the Family</p>
+              <h1 className="auth-brand-title">See the World<br/>Differently</h1>
+              <p className="auth-brand-sub">
+                Create your OptiLux account and unlock exclusive member deals,
+                early access to new arrivals, and a seamless shopping experience.
+              </p>
+            </div>
+
+            <div className="auth-brand-perks">
+              {[
+                { icon: "🎁", text: "Exclusive member-only deals" },
+                { icon: "🚚", text: "Free delivery above Kes 2,000" },
+                { icon: "🔄", text: "7-day hassle-free returns"    },
+                { icon: "✅", text: "100% authentic eyewear"        },
+              ].map((perk, i) => (
+                <div key={i} className="auth-perk">
+                  <span className="auth-perk-icon">{perk.icon}</span>
+                  <span>{perk.text}</span>
                 </div>
-              
+              ))}
             </div>
-            
-
-            {/* {username} */}
-
-            <div>
-              <label htmlFor="email" className="block text-2xl/9 font-bold tracking-tight text-white">Email address</label>
-              <div className='mt-2'>
-                <input type="email"
-                className='form-control block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6 '
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)}
-                required /> <br />
-
-              </div>
-            </div>
-
-            
-            {/* {email} */}
-                <div>
-                   <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="block text-2xl/9 font-bold tracking-tight text-white">Password</label>
-                   </div>
-                   <div className="mt-2">
-                        <input type="password" 
-                        className='form-control block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6'
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)} /> <br />
-
-                   </div>
-                </div>
-
-            {/* {password} */}
-
-            <div>
-              <label htmlFor="phone" className='block text-2xl/9 font-bold tracking-tight text-white'>Phone Number</label>
-              <div className='mt-2'>
-                <input type="tel"
-                  className='form-control block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6'
-                  value={phone} 
-                  onChange={(e) => setPhone (e.target.value)}
-                  required/> <br />
-              </div>
-            </div>
-
-            
-
-            {/* {phone} */}
-
-            <div>
-              <input type="submit"
-               value="Signup" 
-               className='form-control flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500' /> <br /> <br />
-            </div>
-
-            
-            <p className='text-2xl/9 font-bold tracking-tight text-white'>Already have an account?</p>
-             <Link to={'/signin'}>Signin</Link>
-
-          </form>
           </div>
-
-          
         </div>
+
+        {/* ── RIGHT: Form ────────────────────────────────────────────────── */}
+        <div className="auth-form-panel">
+          <div className="auth-form-inner">
+            <p className="auth-form-tag">Create Account</p>
+            <h2 className="auth-form-title">Sign Up</h2>
+            <p className="auth-form-sub">
+              Already have an account?{" "}
+              <Link to="/signin" className="auth-link">Sign in →</Link>
+            </p>
+
+            {success && (
+              <div className="auth-alert success">✓ {success} Redirecting...</div>
+            )}
+            {error && (
+              <div className="auth-alert error">✕ {error}</div>
+            )}
+
+            <form onSubmit={handleSubmit} className="auth-form">
+
+              {/* Username */}
+              <div className="auth-field">
+                <label>Username *</label>
+                <div className="auth-input-wrap">
+                  <span className="auth-input-icon">👤</span>
+                  <input
+                    type="text"
+                    placeholder="e.g. john_kamau"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Email */}
+              <div className="auth-field">
+                <label>Email Address *</label>
+                <div className="auth-input-wrap">
+                  <span className="auth-input-icon">✉️</span>
+                  <input
+                    type="email"
+                    placeholder="john@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="auth-field">
+                <label>Phone Number *</label>
+                <div className="auth-input-wrap">
+                  <span className="auth-input-icon">📱</span>
+                  <input
+                    type="tel"
+                    placeholder="+254 7XX XXX XXX"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div className="auth-field">
+                <label>Password *</label>
+                <div className="auth-input-wrap">
+                  <span className="auth-input-icon">🔒</span>
+                  <input
+                    type={showPwd ? "text" : "password"}
+                    placeholder="Create a strong password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="auth-pwd-toggle"
+                    onClick={() => setShowPwd(!showPwd)}
+                    tabIndex={-1}
+                  >
+                    {showPwd ? "🙈" : "👁️"}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="auth-submit-btn"
+                disabled={loading}
+              >
+                {loading ? "Creating Account..." : "Create Account →"}
+              </button>
+
+              <p className="auth-terms">
+                By signing up you agree to our{" "}
+                <span className="auth-link">Terms of Service</span> and{" "}
+                <span className="auth-link">Privacy Policy</span>.
+              </p>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default Signup;
-
