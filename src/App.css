@@ -1,412 +1,383 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
-/* 🔥 Fix white background issue */
-.App {
-  min-height: 100vh;
-  background-color: rgb(73, 73, 73);
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   APP.CSS — Global styles + Smart Header
+   This is the main App.css — replace your existing one entirely.
+═══════════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ── Global reset ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
-  background-color: rgb(73, 73, 73);
   margin: 0;
+  padding: 0;
+  background: #060b14;
+  color: #f1f5f9;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-html, body, #root {
-  height: 100%;
-}
+.App { min-height: 100vh; }
 
-.h1{
-  font-family: 'Montserrat', sans-serif;
-}
-.App {
-  text-align: center;
-  background-color: rgb(73, 73, 73);
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-/* HEADER */
-.App-header {
-  background: #020617;
-  border-bottom: 1px solid #1e3a8a;
-  padding: 0 40px;
-  height: 70px;
+/* ══════════════════════════════════════════════════════════════════════════
+   SMART HEADER
+══════════════════════════════════════════════════════════════════════════ */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  height: 68px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  backdrop-filter: blur(12px);
+  padding: 0 40px;
+  background: rgba(6, 11, 20, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: box-shadow 0.3s, background 0.3s;
 }
 
-/* LOGO */
-.logo-wrapper {
+.app-header.scrolled {
+  background: rgba(6, 11, 20, 0.97);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+  border-bottom-color: rgba(201,168,76,0.1);
+}
+
+/* ── Logo ─────────────────────────────────────────────────────────────────── */
+.app-logo {
   display: flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
+  transition: opacity 0.2s;
 }
+.app-logo:hover { opacity: 0.85; }
 
-.logo-icon {
-  width: 42px;
-  height: 42px;
+.app-logo svg {
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
 }
 
-.logo-text {
+.app-logo-text {
   display: flex;
   flex-direction: column;
-  line-height: 1.1;
+  line-height: 1;
 }
 
-.logo-text span:first-child {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: white;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-}
-
-.logo-text span:last-child {
-  font-size: 0.6rem;
-  color: #3b82f6;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-/* NAV */
-.nav-container {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.navlinks {
-  text-decoration: none;
-  color: #94a3b8;
-  font-size: 0.82rem;
-  font-weight: 500;
-  padding: 7px 14px;
-  border-radius: 8px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  transition: 0.25s;
-}
-
-.navlinks:hover {
-  color: white;
-  background: rgba(59, 130, 246, 0.12);
-}
-
-.nav-divider {
-  width: 1px;
-  height: 18px;
-  background: #1e3a8a;
-  margin: 0 6px;
-}
-
-/* SIGN IN — ghost button */
-.signin-btn {
-  text-decoration: none;
-  color: #3b82f6;
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 7px 16px;
-  border-radius: 8px;
-  border: 1px solid #1e3a8a;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  transition: 0.25s;
-}
-
-.signin-btn:hover {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: #3b82f6;
-}
-
-/* SIGN UP — solid button */
-.signup-btn {
-  text-decoration: none;
-  background: #3b82f6;
-  color: white;
-  font-size: 0.82rem;
+.app-logo-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
   font-weight: 700;
-  padding: 8px 18px;
-  border-radius: 8px;
-  letter-spacing: 1px;
+  color: #f8fafc;
+  letter-spacing: 0.5px;
+}
+
+.app-logo-sub {
+  font-size: 9px;
+  font-weight: 600;
   text-transform: uppercase;
-  transition: 0.25s;
+  letter-spacing: 2px;
+  color: #c9a84c;
+  margin-top: 3px;
 }
 
-.signup-btn:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
-}
-.title{
-  flex: 1;
-  text-align: center;
-  font-size: 50px;
-  font-weight: bold;
-}
-nav {
+/* ── Right side cluster ───────────────────────────────────────────────────── */
+.app-nav-right {
   display: flex;
-  gap: 15px;
-}
-
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.card {
-  background-color: #0f1e33 !important;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Inputs */
-.form-control {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white !important;
-}
-
-.form-control::placeholder {
-  color: #6b7280;
-}
-
-/* Button */
-input[type="submit"] {
-  background: linear-gradient(90deg, #6366f1, #7c3aed);
-  border: none;
-}
-
-input[type="submit"]:hover {
-  background: linear-gradient(90deg, #7c3aed, #6366f1);
-}
-.glowing-card {
-  background: #0f1e33; /* keep your dark navy */
-  border-radius: 12px;
-  border: 1px solid rgba(0, 123, 255, 0.3);
-  box-shadow: 
-    0 0 10px rgba(0, 123, 255, 0.4),
-    0 0 20px rgba(0, 123, 255, 0.2);
-  transition: 0.3s ease;
-}
-
-/* stronger glow on hover */
-.glowing-card:hover {
-  box-shadow: 
-    0 0 15px rgba(0, 123, 255, 0.6),
-    0 0 30px rgba(0, 123, 255, 0.4);
-}
-.product_img{
-  object-fit: contain;
-  width: 100%;
-  height: 200px;
-}
-.navlinks{
-  text-decoration: none;
-  font-size: 15px;
-  background-color: #282c34;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-weight: 500;
-  transition: background 0.3s;
-}
-.navlinks.hover{
-  background-color: #61dafb;
-}
-.products-header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 30px;
-}
-/* 🖤 Sleek Pagination Styles */
-.pagination-container {
-  margin-top: 30px;
-  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.pagination-btn {
-  background-color: #0f1e33;
-  border: 1px solid #3b82f6;
-  color: #3b82f6;
-  padding: 8px 15px;
-  border-radius: 10px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.pagination-btn:hover {
-  background-color: #3b82f6;
-  color: white;
-  transform: scale(1.05);
-}
-
-.active-btn {
-  background-color: #3b82f6;
-  color: white;
-  transform: scale(1.1);
-}
-
-.disabled-btn {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.search-container {
+/* ── Cart button ──────────────────────────────────────────────────────────── */
+.app-cart-btn {
   position: relative;
-  display: inline-block;
-  width: 300px;
-}
-
-.search-bar {
-  width: 100%;
-  padding: 8px 35px 8px 12px;
-  border-radius: 25px;
-  border: 1px solid #3b82f6;
-  background-color: #0f1e33;
-  color: white;
-}
-
-.search-bar::placeholder {
-  color: #ccc;
-}
-
-.search-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.search-suggestions {
-  position: absolute;
-  top: 110%;
-  width: 100%;
-  background: #0f1e33;
-  border: 1px solid #3b82f6;
-  border-radius: 12px;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 10;
-}
-
-.suggestion-item {
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.suggestion-item:hover {
-  background-color: #1f2a45;
-}
-/* Buttons inside product cards */
-.btn-cart, .btn-buy {
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: none;
-}
-
-.btn-cart {
-  background-color: #0f1e33;
-  color: #3b82f6;
-}
-
-.btn-cart:hover {
-  background-color: #3b82f6;
-  color: #fff;
-  transform: scale(1.05);
-}
-
-.btn-buy {
-  background-color: #3b82f6;
-  color: #fff;
-}
-
-.btn-buy:hover {
-  background-color: #2563eb;
-  transform: scale(1.05);
-}
-/* EMPTY CART */
-.empty-cart {
-  padding: 60px 20px;
-}
-
-.empty-icon {
-  font-size: 60px;
-  margin-bottom: 10px;
-  opacity: 0.6;
-}
-
-/* CART CARD */
-.cart-card {
-  text-align: center;
-  transition: 0.3s;
-}
-
-.cart-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 25px rgba(59,130,246,0.4);
-}
-
-.cart-img-wrapper {
-  height: 150px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #94a3b8;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.app-cart-btn:hover {
+  background: rgba(201,168,76,0.1);
+  border-color: rgba(201,168,76,0.3);
+  color: #c9a84c;
 }
 
-.cart-img-wrapper img {
-  max-height: 100%;
-  transition: 0.3s;
+.app-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: linear-gradient(135deg, #c9a84c, #e2c97e);
+  color: #0f172a;
+  border-radius: 999px;
+  min-width: 17px;
+  height: 17px;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  font-family: 'DM Sans', sans-serif;
 }
 
-.cart-card:hover img {
-  transform: scale(1.1);
+/* ── Auth buttons (logged out) ────────────────────────────────────────────── */
+.app-auth-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* REMOVE BUTTON */
-.remove-btn {
-  background: #ef4444;
+.app-signin-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.app-signin-btn:hover {
+  background: rgba(255,255,255,0.09);
+  color: #f1f5f9;
+}
+
+.app-signup-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #c9a84c, #e2c97e);
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.app-signup-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   USER BUTTON + DROPDOWN (logged in state)
+══════════════════════════════════════════════════════════════════════════ */
+.app-user-wrap {
+  position: relative;
+}
+
+/* Trigger pill */
+.app-user-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 999px;
+  padding: 5px 14px 5px 5px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.app-user-btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(201,168,76,0.25);
+}
+
+/* Avatar circle */
+.app-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c9a84c, #e2c97e);
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* Name + tag */
+.app-user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  text-align: left;
+}
+
+.app-user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f5f9;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-user-tag {
+  font-size: 9px;
+  font-weight: 600;
+  color: #c9a84c;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+}
+
+/* Caret arrow */
+.app-caret {
+  color: #64748b;
+  transition: transform 0.25s ease, color 0.2s;
+  flex-shrink: 0;
+}
+.app-caret.open {
+  transform: rotate(180deg);
+  color: #c9a84c;
+}
+
+/* ── Dropdown panel ───────────────────────────────────────────────────────── */
+.app-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 240px;
+  background: #0f172a;
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  animation: dropdownAppear 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  z-index: 100;
+}
+
+@keyframes dropdownAppear {
+  from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* Profile header inside dropdown */
+.app-dropdown-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+}
+
+.app-dropdown-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c9a84c, #e2c97e);
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.app-dropdown-profile-info { min-width: 0; }
+
+.app-dropdown-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-dropdown-email {
+  font-size: 11px;
+  color: #475569;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Separator */
+.app-dropdown-sep {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin: 0;
+}
+
+/* Menu items */
+.app-dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  background: none;
   border: none;
-  padding: 8px;
-  border-radius: 8px;
-  color: white;
-  transition: 0.3s;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+  font-family: 'DM Sans', sans-serif;
+  position: relative;
+}
+.app-dropdown-item:hover {
+  background: rgba(255,255,255,0.04);
+  color: #f1f5f9;
 }
 
-.remove-btn:hover {
-  background: #dc2626;
-  transform: scale(1.05);
+.app-dropdown-item-icon { font-size: 14px; width: 18px; text-align: center; }
+
+/* Cart count badge inside dropdown */
+.app-dropdown-count {
+  margin-left: auto;
+  background: linear-gradient(135deg, #c9a84c, #e2c97e);
+  color: #0f172a;
+  border-radius: 999px;
+  min-width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
 }
 
-/* TOTAL BOX */
-.cart-total {
-  background: #0f1e33;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+/* Sign out — red tint on hover */
+.app-dropdown-signout { color: #64748b; }
+.app-dropdown-signout:hover {
+  background: rgba(239,68,68,0.07);
+  color: #f87171;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE HEADER
+══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 540px) {
+  .app-header { padding: 0 16px; height: 60px; }
+  .app-logo-sub { display: none; }
+  .app-logo-name { font-size: 16px; }
+  .app-logo svg { width: 32px; height: 32px; }
+  .app-user-info { display: none; }
+  .app-user-btn { padding: 4px; border-radius: 50%; }
+  .app-signin-btn { display: none; }
+  .app-signup-btn { padding: 7px 14px; font-size: 12px; }
+  .app-dropdown { right: -8px; width: 220px; }
 }

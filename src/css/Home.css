@@ -20,6 +20,11 @@
 .logo {
   font-weight: bold;
 }
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
 
 .search-bar {
   padding: 8px 15px;
