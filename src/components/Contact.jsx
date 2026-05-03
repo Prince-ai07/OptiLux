@@ -34,15 +34,15 @@ const Contact = () => {
   //   4. That is all — Tawk.to gives you a free mobile app + web dashboard
   //      where you receive and reply to chats in real time
   // ══════════════════════════════════════════════════════════════════════════
-  const TAWK_PROPERTY_ID = "YOUR_PROPERTY_ID";   // ← replace after signing up at tawk.to
-  const TAWK_WIDGET_ID   = "YOUR_WIDGET_ID";     // ← replace after signing up at tawk.to
+  const TAWK_PROPERTY_ID = "69f7a71e52b26a1c3925b1c4";   // ← replace after signing up at tawk.to
+  const TAWK_WIDGET_ID   = "1jnnm9kdj";     // ← replace after signing up at tawk.to
 
   // Inject the Tawk.to script once when the component mounts
   useEffect(() => {
     // Don't inject if placeholders haven't been replaced yet
     if (
-      TAWK_PROPERTY_ID === "YOUR_PROPERTY_ID" ||
-      TAWK_WIDGET_ID   === "YOUR_WIDGET_ID"
+      TAWK_PROPERTY_ID === "69f7a71e52b26a1c3925b1c4" ||
+      TAWK_WIDGET_ID   === "1jnnm9kdj"
     ) return;
 
     // Avoid injecting the script more than once across re-renders
