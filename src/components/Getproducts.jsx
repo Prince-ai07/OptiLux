@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Home.css'; 
 import Loader from './Loader'; 
@@ -7,20 +7,17 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const NewsletterForm = () => {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState(null); // null | "loading" | "success" | "error"
+  const [status, setStatus] = useState(null);
   const [message, setMessage] = useState("");
 
   const handleSubscribe = async () => {
     if (!email || !email.includes("@")) {
       setStatus("error");
       setMessage("Please enter a valid email address.");
-      // Auto-clear error after 4 seconds
       setTimeout(() => setStatus(null), 4000);
       return;
     }
-
     setStatus("loading");
-
     try {
       const res = await fetch("https://jeremiahprince.alwaysdata.net/api/subscribe", {
         method: "POST",
@@ -28,33 +25,20 @@ const NewsletterForm = () => {
         body: JSON.stringify({ email })
       });
       const data = await res.json();
-
       if (data.success) {
         setStatus("success");
         setMessage(data.message);
         setEmail("");
-        // Auto-clear success message after 5 seconds
-        setTimeout(() => {
-          setStatus(null);
-          setMessage("");
-        }, 5000);
+        setTimeout(() => { setStatus(null); setMessage(""); }, 5000);
       } else {
         setStatus("error");
         setMessage(data.message);
-        // Auto-clear error after 4 seconds
-        setTimeout(() => {
-          setStatus(null);
-          setMessage("");
-        }, 4000);
+        setTimeout(() => { setStatus(null); setMessage(""); }, 4000);
       }
-
     } catch (err) {
       setStatus("error");
       setMessage("Something went wrong. Please try again.");
-      setTimeout(() => {
-        setStatus(null);
-        setMessage("");
-      }, 4000);
+      setTimeout(() => { setStatus(null); setMessage(""); }, 4000);
     }
   };
 
@@ -64,58 +48,63 @@ const NewsletterForm = () => {
         type="email"
         placeholder="Enter your email..."
         value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-          setStatus(null);
-        }}
+        onChange={(e) => { setEmail(e.target.value); setStatus(null); }}
         disabled={status === "loading"}
       />
-      <button
-        onClick={handleSubscribe}
-        disabled={status === "loading"}
-      >
+      <button onClick={handleSubscribe} disabled={status === "loading"}>
         {status === "loading" ? "Subscribing..." : "Subscribe"}
       </button>
-
-      {status === "success" && (
-        <p className="newsletter-msg success">✓ {message}</p>
-      )}
-      {status === "error" && (
-        <p className="newsletter-msg error">✕ {message}</p>
-      )}
+      {status === "success" && <p className="newsletter-msg success">✓ {message}</p>}
+      {status === "error" && <p className="newsletter-msg error">✕ {message}</p>}
     </div>
   );
 };
 
 
 const Getproducts = () => {
-
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState([]);
-  const [categories, setCategories] = useState([]);           // NEW
-  const [selectedCategory, setSelectedCategory] = useState(null); // NEW
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const navigate = useNavigate();
+  const menuRef = useRef(null);
   const img_url = "https://jeremiahprince.alwaysdata.net/static/images/";
 
-  // Fetch categories once on mount
+  // Close menu on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // Close menu on resize to desktop
+  useEffect(() => {
+    const handler = () => { if (window.innerWidth > 768) setMenuOpen(false); };
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+
   useEffect(() => {
     axios.get("https://jeremiahprince.alwaysdata.net/api/get_categories")
       .then(res => setCategories(res.data))
       .catch(err => console.log(err));
   }, []);
 
-  // Fetch products whenever selectedCategory changes
   const fetchProducts = async (categoryId = null) => {
     try {
       setLoading(true);
       const url = categoryId
         ? `https://jeremiahprince.alwaysdata.net/api/get_products?category_id=${categoryId}`
         : "https://jeremiahprince.alwaysdata.net/api/get_products";
-
       const [response] = await Promise.all([
         axios.get(url),
         new Promise((resolve) => setTimeout(resolve, 5000))
@@ -128,11 +117,8 @@ const Getproducts = () => {
     }
   };
 
-  useEffect(() => {
-    fetchProducts(selectedCategory);
-  }, [selectedCategory]);
+  useEffect(() => { fetchProducts(selectedCategory); }, [selectedCategory]);
 
-  // Load cart from localStorage
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(savedCart);
@@ -141,6 +127,7 @@ const Getproducts = () => {
   const scrollToProducts = () => {
     const el = document.getElementById('products-section');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+    setMenuOpen(false);
   };
 
   const addToCart = (product) => {
@@ -157,96 +144,132 @@ const Getproducts = () => {
     <div className="home">
 
       {/* NAVBAR */}
-     <nav className="navbar premium-nav">
-  <svg className="logo-icon" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="42" height="42" rx="10" fill="#0f172a"/>
-    <circle cx="13" cy="22" r="7" stroke="#3b82f6" strokeWidth="2" fill="none"/>
-    <circle cx="29" cy="22" r="7" stroke="#3b82f6" strokeWidth="2" fill="none"/>
-    <path d="M20 22 L22 22" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
-    <path d="M6 22 L6 19" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
-    <path d="M36 22 L36 19" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
-    <circle cx="11" cy="20" r="1.2" fill="#60a5fa" opacity="0.6"/>
-    <circle cx="27" cy="20" r="1.2" fill="#60a5fa" opacity="0.6"/>
-    <circle cx="21" cy="11" r="2" fill="#facc15"/>
-  </svg>
+      <nav className="navbar premium-nav" ref={menuRef}>
+        {/* Logo */}
+        <svg className="logo-icon" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="42" height="42" rx="10" fill="#0f172a"/>
+          <circle cx="13" cy="22" r="7" stroke="#3b82f6" strokeWidth="2" fill="none"/>
+          <circle cx="29" cy="22" r="7" stroke="#3b82f6" strokeWidth="2" fill="none"/>
+          <path d="M20 22 L22 22" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M6 22 L6 19" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M36 22 L36 19" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
+          <circle cx="11" cy="20" r="1.2" fill="#60a5fa" opacity="0.6"/>
+          <circle cx="27" cy="20" r="1.2" fill="#60a5fa" opacity="0.6"/>
+          <circle cx="21" cy="11" r="2" fill="#facc15"/>
+        </svg>
 
-  {/* SEARCH */}
-  <div className="search-container">
-    <input
-      type="text"
-      placeholder="Search specs..."
-      className="search-bar"
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") scrollToProducts();
-      }}
-    />
-    <span className="search-icon">🔍</span>
-
-    {search && (
-      <div className="search-suggestions">
-        {filteredProducts.slice(0, 5).map((p, i) => (
-          <div
-            key={i}
-            className="suggestion-item"
-            onClick={() => {
-              setSearch(p.product_name);
-              scrollToProducts();
-            }}
-          >
-            {p.product_name}
-          </div>
-        ))}
-        {filteredProducts.length === 0 && (
-          <div className="suggestion-item text-danger">No results found</div>
-        )}
-      </div>
-    )}
-  </div>
-
-  {/* CATEGORY DROPDOWN */}
-  <div className="nav-category-dropdown">
-    <button className="nav-category-btn">
-      <span className="nav-category-label">
-        {selectedCategory === null
-          ? "All Categories"
-          : categories.find(c => c.category_id === selectedCategory)?.category_name}
-      </span>
-      <svg className="caret-icon" viewBox="0 0 10 6" fill="none">
-        <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    </button>
-
-    <div className="nav-category-menu">
-      <div
-        className={`nav-category-item ${selectedCategory === null ? "active" : ""}`}
-        onClick={() => setSelectedCategory(null)}
-      >
-        <span className="category-dot"></span>
-        All Categories
-      </div>
-      {categories.map((cat) => (
-        <div
-          key={cat.category_id}
-          className={`nav-category-item ${selectedCategory === cat.category_id ? "active" : ""}`}
-          onClick={() => {
-            setSelectedCategory(cat.category_id);
-            scrollToProducts();
-          }}
-        >
-          <span className="category-dot"></span>
-          {cat.category_name}
+        {/* SEARCH — desktop */}
+        <div className="search-container nav-search-desktop">
+          <input
+            type="text"
+            placeholder="Search specs..."
+            className="search-bar"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") scrollToProducts(); }}
+          />
+          <span className="search-icon">🔍</span>
+          {search && (
+            <div className="search-suggestions">
+              {filteredProducts.slice(0, 5).map((p, i) => (
+                <div key={i} className="suggestion-item" onClick={() => { setSearch(p.product_name); scrollToProducts(); }}>
+                  {p.product_name}
+                </div>
+              ))}
+              {filteredProducts.length === 0 && (
+                <div className="suggestion-item text-danger">No results found</div>
+              )}
+            </div>
+          )}
         </div>
-      ))}
-    </div>
-  </div>
 
-  {/* CART */}
-  <div className="cart" onClick={() => navigate("/cart")} style={{ cursor: "pointer" }}>
-    🛒 {cart.length}
-  </div>
-</nav>
+        {/* CATEGORY DROPDOWN — desktop */}
+        <div className="nav-category-dropdown nav-cat-desktop">
+          <button className="nav-category-btn">
+            <span className="nav-category-label">
+              {selectedCategory === null
+                ? "All Categories"
+                : categories.find(c => c.category_id === selectedCategory)?.category_name}
+            </span>
+            <svg className="caret-icon" viewBox="0 0 10 6" fill="none">
+              <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <div className="nav-category-menu">
+            <div className={`nav-category-item ${selectedCategory === null ? "active" : ""}`} onClick={() => setSelectedCategory(null)}>
+              <span className="category-dot"></span>All Categories
+            </div>
+            {categories.map((cat) => (
+              <div key={cat.category_id} className={`nav-category-item ${selectedCategory === cat.category_id ? "active" : ""}`}
+                onClick={() => { setSelectedCategory(cat.category_id); scrollToProducts(); }}>
+                <span className="category-dot"></span>{cat.category_name}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CART — always visible */}
+        <div className="cart" onClick={() => navigate("/cart")} style={{ cursor: "pointer" }}>
+          🛒 {cart.length}
+        </div>
+
+        {/* HAMBURGER BUTTON */}
+        <button
+          className={`hamburger-btn ${menuOpen ? "open" : ""}`}
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+
+      {/* MOBILE DRAWER */}
+      <div className={`mobile-drawer ${menuOpen ? "open" : ""}`}>
+        <div className="mobile-drawer-search">
+          <input
+            type="text"
+            placeholder="Search specs..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") scrollToProducts(); }}
+          />
+          <span>🔍</span>
+          {search && filteredProducts.length > 0 && (
+            <div className="mobile-suggestions">
+              {filteredProducts.slice(0, 4).map((p, i) => (
+                <div key={i} className="mobile-suggestion-item" onClick={() => { setSearch(p.product_name); scrollToProducts(); }}>
+                  {p.product_name}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="mobile-drawer-section-label">Categories</div>
+        <div
+          className={`mobile-drawer-item ${selectedCategory === null ? "active" : ""}`}
+          onClick={() => { setSelectedCategory(null); setMenuOpen(false); }}
+        >All Categories</div>
+        {categories.map((cat) => (
+          <div
+            key={cat.category_id}
+            className={`mobile-drawer-item ${selectedCategory === cat.category_id ? "active" : ""}`}
+            onClick={() => { setSelectedCategory(cat.category_id); scrollToProducts(); }}
+          >{cat.category_name}</div>
+        ))}
+        <div className="mobile-drawer-divider"></div>
+        <div className="mobile-drawer-item" onClick={() => { navigate("/cart"); setMenuOpen(false); }}>
+          🛒 Cart ({cart.length})
+        </div>
+        <div className="mobile-drawer-item" onClick={() => { navigate("/products"); setMenuOpen(false); }}>
+          👓 All Products
+        </div>
+      </div>
+
+      {/* OVERLAY */}
+      {menuOpen && <div className="mobile-overlay" onClick={() => setMenuOpen(false)}></div>}
+
       {/* HERO */}
       <section className="hero-section">
         <div className="hero-overlay"></div>
@@ -259,12 +282,9 @@ const Getproducts = () => {
 
       {/* PRODUCTS */}
       <div id="products-section" className="container mt-5">
-
         <h2 className="section-title">Featured Collection</h2>
-
         {loading && <Loader />}
         {error && <h4 className="text-danger">{error}</h4>}
-
         <div className="row">
           {filteredProducts.slice(0, 8).map((product, index) => (
             <div key={index} className="col-md-3 col-sm-6 mb-4">
@@ -285,11 +305,8 @@ const Getproducts = () => {
             </div>
           ))}
         </div>
-
         <div className="text-center mt-4">
-          <button className="view-more-btn" onClick={() => navigate("/products")}>
-            View More Products →
-          </button>
+          <button className="view-more-btn" onClick={() => navigate("/products")}>View More Products →</button>
         </div>
       </div>
 
@@ -373,54 +390,19 @@ const Getproducts = () => {
             </div>
           </div>
           <div className="footer-col">
-              <h4>Shop</h4>
-              <ul>
-                <li>
-                  <a href="#" onClick={(e) => {
-                    e.preventDefault();
-                    const el = document.getElementById('products-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}>New Arrivals</a>
-                </li>
-                <li>
-                  <a href="#" onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedCategory(1);
-                    const el = document.getElementById('products-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}>Sunglasses</a>
-                </li>
-                <li>
-                  <a href="#" onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedCategory(3);
-                    const el = document.getElementById('products-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}>Kids</a>
-                </li>
-                <li>
-                  <a href="#" onClick={(e) => {
-                    e.preventDefault();
-                    navigate("/products");
-                  }}>Sale</a>
-                </li>
-              </ul>
-            </div>
+            <h4>Shop</h4>
+            <ul>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' }); }}>New Arrivals</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setSelectedCategory(1); document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' }); }}>Sunglasses</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setSelectedCategory(3); document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' }); }}>Kids</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); navigate("/products"); }}>Sale</a></li>
+            </ul>
+          </div>
           <div className="footer-col">
             <h4>Company</h4>
             <ul>
-              <li>
-                <a href="#" onClick={(e) => {
-                  e.preventDefault();
-                  navigate("/aboutus");
-                }}>About Us</a>
-              </li>
-              <li>
-                <a href="#" onClick={(e) => {
-                  e.preventDefault();
-                  navigate("/blog");
-                }}>Blog</a>
-              </li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); navigate("/aboutus"); }}>About Us</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); navigate("/blog"); }}>Blog</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); navigate("/careers"); }}>Careers</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); navigate("/press"); }}>Press</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); navigate("/contact"); }}>Contact</a></li>
