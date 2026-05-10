@@ -19,6 +19,7 @@ import Press          from './components/Press';
 import Contact        from './components/Contact';
 import AdminDashboard from './components/AdminDashboard';
 
+
 const HIDDEN_HEADER_ROUTES = [
   '/products',
   '/cart',
@@ -278,6 +279,7 @@ function App() {
           <Route path="/optilux-admin-2026" element={<AdminDashboard />} />
           <Route path="*"            element={<Notfound />}      />
         </Routes>
+
       </div>
     </Router>
   );

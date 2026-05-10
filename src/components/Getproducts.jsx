@@ -412,7 +412,7 @@ const Getproducts = () => {
             <h4>Contact</h4>
             <div className="footer-contact-item"><span className="contact-icon">📍</span><span>Diani, Kenya</span></div>
             <div className="footer-contact-item"><span className="contact-icon">📞</span><span>+254 717 575 102</span></div>
-            <div className="footer-contact-item"><span className="contact-icon">✉️</span><span>optilux@gmail.com</span></div>
+            <div className="footer-contact-item"><span className="contact-icon">✉️</span><span>optilux60@gmail.com</span></div>
             <div className="footer-contact-item"><span className="contact-icon">🕐</span><span>Mon – Sat, 8am – 6pm</span></div>
           </div>
         </div>
